@@ -13233,36 +13233,11 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<table style="width:20%">
-<tr>
-<th><Name></th>
-<th><Address></th>
-<th><Salary></th>
-</tr>
-
-<tr>
-<td><Hanna></td>
-<td><Brisbane></td>
-<td><4000></td>
-</tr>
-
-<tr>
-<td><Adam></td>
-<td><Sydney></td>
-<td><5000></td>
-</tr>
-</table>
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <table>
 <thead><tr>
-<th>Stretch/Untouched</th>
-<th>ProbDistribution</th>
-<th>Accuracy</th>
+<th>tabel 1</th>
+<th>123</th>
+<th>456</th>
 </tr>
 </thead>
 <tbody>
@@ -13360,6 +13335,22 @@ a.anchor-link {
 </div>
 </div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#hideme</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="n">listOfImageNames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/home/nijso/covid19-seir/coronavirus_EM.jpg&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">imageName</span> <span class="ow">in</span> <span class="n">listOfImageNames</span><span class="p">:</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">imageName</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="mi">250</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13386,6 +13377,110 @@ width=250
 
 </div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%matplotlib inline</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">interact</span>
+
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="k">import</span> <span class="n">solve_ivp</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">minimize</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="c1">#import matplotlib.pyplot as plt</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="c1"># for nan</span>
+<span class="c1">#import math</span>
+
+<span class="c1">#S_0 = 15000</span>
+<span class="c1">#population size</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">1000000</span>
+<span class="n">I_0</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">R_0</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">S_0</span> <span class="o">=</span> <span class="n">N</span> <span class="o">-</span> <span class="n">I_0</span> <span class="o">-</span> <span class="n">R_0</span>
+
+<span class="c1"># nr of points</span>
+<span class="n">size</span><span class="o">=</span><span class="mi">72</span>
+
+
+<span class="c1"># beta = transmission rate [number per day]</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mf">0.4</span>
+
+<span class="c1"># gamma = 1/infectuous period = 1/T, T=5 days</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.2</span>
+
+<span class="c1">#R = beta/gamma</span>
+
+
+<span class="c1">#def f(x):</span>
+<span class="c1">#    return x</span>
+<span class="c1">#        </span>
+<span class="c1">##interact(f, x=widgets.IntSlider(min=-10, max=30, step=1, value=10));</span>
+<span class="c1">#interact(f, x=widgets.FloatSlider(min=0.4,max=0.6,step=0.01,value=0.5))</span>
+
+<span class="c1"># @ means its a decorator, functions are called implicitly</span>
+<span class="nd">@interact</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">FloatSlider</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mf">0.4</span><span class="p">),</span><span class="n">gamma</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">FloatSlider</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mf">0.2</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">sirsol</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span><span class="n">gamma</span><span class="p">):</span>
+
+    
+    <span class="k">def</span> <span class="nf">SIR</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+            <span class="n">S</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">I</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="n">beta</span><span class="o">*</span><span class="n">S</span><span class="o">*</span><span class="n">I</span><span class="o">/</span><span class="n">N</span><span class="p">,</span> <span class="n">beta</span><span class="o">*</span><span class="n">S</span><span class="o">*</span><span class="n">I</span><span class="o">/</span><span class="n">N</span> <span class="o">-</span> <span class="n">gamma</span><span class="o">*</span><span class="n">I</span><span class="p">,</span><span class="n">gamma</span><span class="o">*</span><span class="n">I</span><span class="p">]</span>
+
+    
+    <span class="c1">#beta=n</span>
+    <span class="n">SIR_sol</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span><span class="n">SIR</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">],</span> <span class="p">[</span><span class="n">S_0</span><span class="p">,</span><span class="n">I_0</span><span class="p">,</span><span class="n">R_0</span><span class="p">],</span> <span class="n">t_eval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+
+    <span class="c1">#index = confirmed.index</span>
+    <span class="c1">#print(&quot;index = &quot;,index)</span>
+    <span class="c1">#print </span>
+    <span class="c1">#x=np.arange(len(new_index))</span>
+        
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.linewidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;lines.linewidth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;lines.markersize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;lines.markeredgecolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.labelweight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;legend.fontsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.titlesize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
+
+        
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">42</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">70</span><span class="p">],[</span><span class="s1">&#39;start outbreak&#39;</span><span class="p">,</span><span class="s1">&#39;week 1&#39;</span><span class="p">,</span><span class="s1">&#39;week 2&#39;</span><span class="p">,</span><span class="s1">&#39;week 3&#39;</span><span class="p">,</span><span class="s1">&#39;week 4&#39;</span><span class="p">,</span><span class="s1">&#39;week 5&#39;</span><span class="p">,</span><span class="s1">&#39;week 6&#39;</span><span class="p">,</span><span class="s1">&#39;week 7&#39;</span><span class="p">,</span><span class="s1">&#39;week 8&#39;</span><span class="p">,</span><span class="s1">&#39;week 9&#39;</span><span class="p">,</span><span class="s1">&#39;week 10&#39;</span><span class="p">],</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+       
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">SIR_sol</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="n">SIR_sol</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Susceptible S&#39;</span><span class="p">)</span>
+    <span class="c1">#plt.plot(prediction.y[1],label=&#39;predicted exposed E&#39;)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">SIR_sol</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="n">SIR_sol</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Infected I&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">SIR_sol</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="mf">0.96</span><span class="o">*</span><span class="n">SIR_sol</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Recovered R&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">SIR_sol</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="mf">0.04</span><span class="o">*</span><span class="n">SIR_sol</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Deaths D&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    
+    
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13401,13 +13496,13 @@ width=250
 
  
  
-<div id="b6933a10-467b-4008-9a5a-925a0c0e83c4"></div>
+<div id="e6e2f5d4-7cdd-4723-b5a9-a1621733ea23"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#b6933a10-467b-4008-9a5a-925a0c0e83c4');
+var element = $('#e6e2f5d4-7cdd-4723-b5a9-a1621733ea23');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "288e6e44cc194a39abad479b5b551c79", "version_major": 2, "version_minor": 0}
+{"model_id": "cac22970fcd947bfadaf3a5306cf90f4", "version_major": 2, "version_minor": 0}
 </script>
 </div>
 
@@ -13418,6 +13513,16 @@ var element = $('#b6933a10-467b-4008-9a5a-925a0c0e83c4');
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div></section></section>
 </div>
